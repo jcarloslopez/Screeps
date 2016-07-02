@@ -14,9 +14,9 @@
          
         //creep.say("Builder");
         
-	    if(creep.carry.energy == 0) {
-	        
-	        var wharehouses = creep.room.find(FIND_STRUCTURES, {
+        if(creep.carry.energy == 0) {
+            
+            var wharehouses = creep.room.find(FIND_STRUCTURES, {
                 filter: (structure) => {
                     return (structure.structureType == STRUCTURE_EXTENSION || structure.structureType == STRUCTURE_SPAWN); /*&& structure.energy < structure.energyCapacity*/
                 }
@@ -27,12 +27,36 @@
                     creep.moveTo(wharehouses[0]);
                 }
             }
-	    }else{ // Builder has energy
-	        var target = creep.pos.findClosestByRange(FIND_CONSTRUCTION_SITES);
-            if(target) {
-                if(creep.build(target) == ERR_NOT_IN_RANGE) {
-                    creep.moveTo(target);
-                    return;
+        }else{ // Builder has energy
+        
+            {   // Build
+                var target = creep.pos.findClosestByRange(FIND_CONSTRUCTION_SITES);
+                if(target) {
+                    if(creep.build(target) == ERR_NOT_IN_RANGE) {
+                        creep.moveTo(target);
+                        return;
+                    }
+                }
+            }
+            
+            {   // Repair
+                var target = creep.pos.findClosestByRange(FIND_STRUCTURES, {
+                    filter: function(object){
+                        //if(object.structureType != STRUCTURE_ROAD ) {
+                        //   return false;
+                        //}
+                        if(object.hits > object.hitsMax / 3) {
+                            return false;
+                        }
+                        return true;
+                    } 
+                });
+                
+                if(target){
+                    if(creep.repair(target) == ERR_NOT_IN_RANGE){
+                        creep.moveTo(target);
+                        return;
+                    }
                 }
             }
             
@@ -42,10 +66,10 @@
                 creep.upgradeController(creep.room.controller);
             
             }
-	    }
+        }
         
-	}
-	
+    }
+    
  }
  
  module.exports = roleBuilder;
