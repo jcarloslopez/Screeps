@@ -60,7 +60,7 @@ function getNumberCreepsWithRole(role){
 
 var creepsManager = {
   update: function() {
-    
+
    getNumberCreepsWithRole("miner")
    /* MOVE THIS FRAGMENTS OF CODE TO A FUNCTION */
    
@@ -93,6 +93,9 @@ var creepsManager = {
 	    // Check every frame if we should increase the number of harvesters
 	    var currBuilders = getNumberCreepsWithRole("builder");
 	    if(currBuilders < config.total_builders){
+        /* Dont generate builders if there are not constructions to build */
+        var constructions_availiable = creep.room.find(Game.CONSTRUCTION_SITES);
+        if(!constructions_availiable > 0)return;
 	        // Change to creep factory method
 	        var builder = [MOVE, CARRY, WORK];
           Game.spawns.Spawn1.createCreep(builder, null, {role: "builder"});
@@ -103,7 +106,7 @@ var creepsManager = {
         
         
 	   // Update creeps
-    for(var name in Game.creeps) {
+     for(var name in Game.creeps) {
       var creep = Game.creeps[name];
       if(creep.memory.role == 'harvester') {
         roleHarvester.update(creep);

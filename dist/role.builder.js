@@ -13,52 +13,21 @@ var roleBuilder = {
 
       //creep.say("Builder");
       
-      if(creep.carry.energy == 0) {
+      if(creep.carry.energy < creep.carryCapacity) {
         creep.memory.working = false;
+        creep.moveTo(Game.spawns.Spawn1);
+        Game.spawns.Spawn1.transferEnergy(creep);
 
-        if(!creep.memory.destinationFound){
-
-          var wharehouses = creep.room.find(FIND_STRUCTURES, {
-            filter: (structure) => {
-              return (structure.structureType == STRUCTURE_EXTENSION || structure.structureType == STRUCTURE_SPAWN); /*&& structure.energy < structure.energyCapacity*/
-            }
-          });
-
-          if(wharehouses.length > 0){
-            creep.memory.destinationFound = true;
-            creep.memory.source = wharehouses[0];
-          }
-
-        }else{
-          //var source = Game.getObjectById(creep.memory.source.id);
-          if(Game.getObjectById(creep.memory.source.id).transferEnergy(creep) == ERR_NOT_IN_RANGE) {
-            creep.moveTo(creep.memory.source.id);
-          }else{
-            creep.memory.working = true;
-          }
-
-        }
-      }else if(creep.carry.energy >= creep.carryCapacity){
+      }else{
         creep.memory.working = true;
       }
       
       // Build
       if(creep.memory.working){
-
-        if(creep.memory.destinationFound === false){
-          creep.memory.target = creep.pos.findClosestByRange(FIND_CONSTRUCTION_SITES);
-          
-          if(creep.memory.target){
-            creep.memory.destinationFound = true;  
-          }
-        }else{
-          if(!creep.memory.target){
-            creep.memory.destinationFound = false;
-            return;
-          }
-          if(creep.build(Game.getObjectById(creep.memory.target.id)) == ERR_NOT_IN_RANGE) {
-            creep.moveTo(creep.memory.target.id);
-          }
+        var target = creep.pos.findClosestByRange(FIND_CONSTRUCTION_SITES);
+        if(target){
+          creep.moveTo(target);
+          creep.build(target);
         }
       }
       
