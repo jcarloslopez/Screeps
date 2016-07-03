@@ -1,0 +1,25 @@
+{
+  "name": "screeps",
+  "version": "1.0.0",
+  "description": "",
+  "main": "main.js",
+  "dependencies": {
+    "grunt-screeps": "^1.2.1"
+  },
+  "devDependencies": {
+    "grunt-cli": "^1.2.0"
+  },
+  "scripts": {
+    "test": "tap test/*.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/jCarlosLopez/Screeps.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/jCarlosLopez/Screeps/issues"
+  },
+  "homepage": "https://github.com/jCarlosLopez/Screeps#readme"
+}
