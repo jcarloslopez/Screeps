@@ -11,7 +11,7 @@ var config = {
     total_harvesters: 0,
 
     total_miners: 3,
-    total_carriers: 3, // Same as miners to help them
+    total_carriers: 5, // Same as miners to help them
     
     total_builders: 2,
 };
