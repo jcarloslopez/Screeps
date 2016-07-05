@@ -5,6 +5,7 @@ var roleHarvester = require('role.harvester');
 var roleMiner = require('role.miner');
 var roleCarrier = require('role.carrier');
 var roleBuilder = require('role.builder');
+var roleUpgrader = require('role.upgrader');
 
 /*
  * Module code goes here. Use 'module.exports' to export things:
@@ -64,72 +65,82 @@ var creepsManager = {
    getNumberCreepsWithRole("miner")
    /* MOVE THIS FRAGMENTS OF CODE TO A FUNCTION */
    
-	    // Check every frame if we should increase the number of harvesters
-	    var currHarvesters = getNumberCreepsWithRole("harvester");
-	    
-	    if(currHarvesters < config.total_harvesters){
-	        // Change to creep factory method
-	        var harvester = [CARRY, MOVE, WORK];
-          Game.spawns.Spawn1.createCreep(harvester, null, {role: "harvester"});
-        }
-        
-        
-	    // Check every frame if we should increase the number of harvesters
-	    var currMiners = getNumberCreepsWithRole("miner");
-	    if(currMiners < config.total_miners){
-	        // Change to creep factory method
-	        var miner = [MOVE, CARRY, CARRY, CARRY, WORK]; // 300 cost
-          Game.spawns.Spawn1.createCreep(miner, null, {role: "miner"});
-        }
-        
-	    // Check every frame if we should increase the number of harvesters
-	    var currCarriers = getNumberCreepsWithRole("carrier");
-	    if(currCarriers < config.total_carriers){
-	        // Change to creep factory method
-	        var carrier = [MOVE, MOVE, MOVE, MOVE, CARRY];
-          Game.spawns.Spawn1.createCreep(carrier, null, {role: "carrier"});
-        }
-        
-	    // Check every frame if we should increase the number of harvesters
-	    var currBuilders = getNumberCreepsWithRole("builder");
-	    if(currBuilders < config.total_builders){
-        /* Dont generate builders if there are not constructions to build */
-        var constructions_availiable = creep.room.find(Game.CONSTRUCTION_SITES);
-        if(!constructions_availiable > 0)return;
-	        // Change to creep factory method
-	        var builder = [MOVE, CARRY, WORK];
-          Game.spawns.Spawn1.createCreep(builder, null, {role: "builder"});
-        }
-        
-        
-        
-        
-        
-	   // Update creeps
-     for(var name in Game.creeps) {
-      var creep = Game.creeps[name];
-      if(creep.memory.role == 'harvester') {
-        roleHarvester.update(creep);
-      }
-      
-      if(creep.memory.role == 'miner') {
-        roleMiner.update(creep);
-      }
-      
-      if(creep.memory.role == 'carrier') {
-        roleCarrier.update(creep);
-      }
-      
-      if(creep.memory.role == 'builder') {
-        roleBuilder.update(creep);
+    // Check every frame if we should increase the number of harvesters
+    var currHarvesters = getNumberCreepsWithRole("harvester");
+    
+    if(currHarvesters < config.total_harvesters){
+        // Change to creep factory method
+        var harvester = [CARRY, MOVE, WORK];
+        Game.spawns.Spawn1.createCreep(harvester, null, {role: "harvester"});
       }
       
       
+    // Check every frame if we should increase the number of harvesters
+    var currMiners = getNumberCreepsWithRole("miner");
+    if(currMiners < config.total_miners){
+        // Change to creep factory method
+        var miner = [MOVE, CARRY, CARRY, CARRY, WORK]; // 300 cost
+        Game.spawns.Spawn1.createCreep(miner, null, {role: "miner"});
+      }
+      
+    // Check every frame if we should increase the number of harvesters
+    var currCarriers = getNumberCreepsWithRole("carrier");
+    if(currCarriers < config.total_carriers){
+        // Change to creep factory method
+        var carrier = [MOVE, MOVE, MOVE, MOVE, CARRY];
+        Game.spawns.Spawn1.createCreep(carrier, null, {role: "carrier"});
+      }
+      
+    // Check every frame if we should increase the number of harvesters
+    var currBuilders = getNumberCreepsWithRole("builder");
+    if(currBuilders < config.total_builders){
+      /* Dont generate builders if there are not constructions to build */
+      var constructions_availiable = Game.spawns.Spawn1.room.find(Game.CONSTRUCTION_SITES);
+      if(!constructions_availiable > 0)return;
+        // Change to creep factory method
+        var builder = [MOVE, CARRY, WORK];
+        Game.spawns.Spawn1.createCreep(builder, null, {role: "builder"});
+      }
+      
+      var currUpgraders = getNumberCreepsWithRole("upgrader");
+      if(currUpgraders < config.total_upgraders){
+        
+        if(currMiners != config.total_miners && currCarriers != config.total_carriers)return;
+
+        var upgrader = [MOVE, CARRY, CARRY, WORK];
+        Game.spawns.Spawn1.createCreep(upgrader, null, {role: "upgrader"});
+      }
+
+      
+	     // Update creeps
+       for(var name in Game.creeps) {
+        var creep = Game.creeps[name];
+        if(creep.memory.role == 'harvester') {
+          roleHarvester.update(creep);
+        }
+        
+        if(creep.memory.role == 'miner') {
+          roleMiner.update(creep);
+        }
+        
+        if(creep.memory.role == 'carrier') {
+          roleCarrier.update(creep);
+        }
+        
+        if(creep.memory.role == 'builder') {
+          roleBuilder.update(creep);
+        }
+
+        if(creep.memory.role == 'upgrader') {
+          roleUpgrader.update(creep);
+        }
+        
+        
+      }
+      
+
     }
     
+  };
 
-  }
-  
-};
-
-module.exports = creepsManager;
+  module.exports = creepsManager;

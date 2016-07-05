@@ -14,6 +14,7 @@ var config = {
     total_carriers: 4,
     
     total_builders: 2,
+    total_upgraders: 1,
 };
 
 module.exports = config;

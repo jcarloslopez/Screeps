@@ -18,24 +18,24 @@
  
  
  var roleMiner = {
+   
+   update: function(creep) {
      
-     update: function(creep) {
-         
          //creep.say("Miner");
-        
+         
 	    // Creep is going to carry resources
 	    if(creep.carry.energy < 50 /*creep.carryCapacity*/) { // 50 units is what can carry the carrier
-            var sources = creep.room.find(FIND_SOURCES);
+        var sources = creep.room.find(FIND_SOURCES);
             // If is not near, walk to resources
             if(creep.harvest(sources[0]) == ERR_NOT_IN_RANGE) {
-                creep.moveTo(sources[0]);
+              creep.moveTo(sources[0]);
             }
-        }else{
+          }else{
             creep.drop(RESOURCE_ENERGY);
+          }
+          
         }
         
-	}
-	
- }
- 
- module.exports = roleMiner;
+      }
+      
+      module.exports = roleMiner;
