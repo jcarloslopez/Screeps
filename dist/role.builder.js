@@ -7,29 +7,52 @@
 * mod.thing == 'a thing'; // true
 */
 
+var total_energy = 0;
+var total_energy_capacity = 0;
+
 var roleBuilder = {
 
  update: function(creep) {
 
-      //creep.say("Builder");
-      
-      if(creep.carry.energy < creep.carryCapacity) {
-        creep.memory.working = false;
-        creep.moveTo(Game.spawns.Spawn1);
-        Game.spawns.Spawn1.transferEnergy(creep);
+  if(creep.carry.energy == 0) {
+    creep.memory.working = false;
 
-      }else{
-        creep.memory.working = true;
+    // Check if energy is greater than a third of max energy,
+    // If is not, dont take energy from structures
+    total_energy = total_energy_capacity = 0;
+    var wharehouses = creep.room.find(FIND_STRUCTURES, {
+      filter: (structure) => {
+        return (structure.structureType == STRUCTURE_EXTENSION || structure.structureType == STRUCTURE_SPAWN || structure.structureType == StructureContainer) &&
+        structure.energy < structure.energyCapacity;
       }
+    });
+
+    // Accum current energy and total 
+    for (i = 0; i < wharehouses.length; ++i) {
+      total_energy += wharehouses[i].energy;
+      total_energy_capacity += wharehouses[i].energyCapacity;
+    }
+    
+    //console.log(total_energy + "/" + total_energy_capacity)
+    if(total_energy >= (total_energy_capacity / 3)){
+      if(Game.spawns.Spawn1.transferEnergy(creep) == ERR_NOT_IN_RANGE){
+        creep.moveTo(Game.spawns.Spawn1);    
+      }
+    }
+
+  }else{
+    creep.memory.working = true;
+  }
       
-      // Build
-      if(creep.memory.working){
-        var target = creep.pos.findClosestByRange(FIND_CONSTRUCTION_SITES);
-        if(target){
-          creep.moveTo(target);
-          creep.build(target);
-        }
+  // Build
+  if(creep.memory.working){
+    var target = creep.pos.findClosestByRange(FIND_CONSTRUCTION_SITES);
+    if(target){
+      if(creep.build(target) == ERR_NOT_IN_RANGE) {
+        creep.moveTo(target);
       }
+    }
+  }
       
       
       // Pass to repairer

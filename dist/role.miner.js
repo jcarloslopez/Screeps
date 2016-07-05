@@ -23,8 +23,8 @@
      
          //creep.say("Miner");
          
-	    // Creep is going to carry resources
-	    if(creep.carry.energy < 50 /*creep.carryCapacity*/) { // 50 units is what can carry the carrier
+      // Creep is going to carry resources
+      if(creep.carry.energy < 50 /*creep.carryCapacity*/) { // 50 units is what can carry the carrier
         var sources = creep.room.find(FIND_SOURCES);
             // If is not near, walk to resources
             if(creep.harvest(sources[0]) == ERR_NOT_IN_RANGE) {
