@@ -11,9 +11,7 @@
    
    update: function(creep) {
      
-        //creep.say("Carrier");
-        
-        if(creep.carry.energy == 0) {
+        if(creep.carry.energy != creep.carryCapacity) {
           var target = creep.pos.findClosestByRange(FIND_DROPPED_ENERGY);
           
           
