@@ -15,6 +15,7 @@ var config = {
     
     total_builders: 2,
     total_upgraders: 1,
+    total_fixers: 1,
 };
 
 module.exports = config;

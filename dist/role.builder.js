@@ -22,8 +22,7 @@ var roleBuilder = {
     total_energy = total_energy_capacity = 0;
     var wharehouses = creep.room.find(FIND_STRUCTURES, {
       filter: (structure) => {
-        return (structure.structureType == STRUCTURE_EXTENSION || structure.structureType == STRUCTURE_SPAWN || structure.structureType == StructureContainer) &&
-        structure.energy < structure.energyCapacity;
+        return (structure.structureType == STRUCTURE_EXTENSION || structure.structureType == STRUCTURE_SPAWN || structure.structureType == StructureContainer);
       }
     });
 
@@ -35,15 +34,16 @@ var roleBuilder = {
     
     //console.log(total_energy + "/" + total_energy_capacity)
     if(total_energy >= (total_energy_capacity / 1.5)){
-      if(Game.spawns.Spawn1.transferEnergy(creep) == ERR_NOT_IN_RANGE){
-        creep.moveTo(Game.spawns.Spawn1);    
+        //console.log(total_energy + "/" + (total_energy_capacity / 1.5))
+        if(Game.spawns.Spawn1.transferEnergy(creep) == ERR_NOT_IN_RANGE){
+          creep.moveTo(Game.spawns.Spawn1);    
+        }
       }
-    }
 
   }else{
     creep.memory.working = true;
   }
-      
+
   // Build
   if(creep.memory.working){
     var target = creep.pos.findClosestByRange(FIND_CONSTRUCTION_SITES);
@@ -53,8 +53,8 @@ var roleBuilder = {
       }
     }
   }
-      
-      
+
+
       // Pass to repairer
       /*{   // Repair
         var target = creep.pos.findClosestByRange(FIND_STRUCTURES, {

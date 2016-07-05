@@ -6,6 +6,7 @@ var roleMiner = require('role.miner');
 var roleCarrier = require('role.carrier');
 var roleBuilder = require('role.builder');
 var roleUpgrader = require('role.upgrader');
+var roleFixer = require('role.fixer');
 
 /*
  * Module code goes here. Use 'module.exports' to export things:
@@ -100,37 +101,51 @@ var creepsManager = {
         }
       }
 
-      
-       // Update creeps
-       for(var name in Game.creeps) {
-        var creep = Game.creeps[name];
-        /*
-        if(creep.memory.role == 'harvester') {
-          roleHarvester.update(creep);
+      var currFixers = getNumberCreepsWithRole("fixer");
+      if(currFixers < config.total_fixers){
+        // Don't generate builders if we don't have miners and carriers
+        if(currMiners >= config.total_miners && currCarriers >= config.total_carriers){
+          var fixer = [MOVE, MOVE, MOVE, MOVE, CARRY, WORK];
+          Game.spawns.Spawn1.createCreep(fixer, null, {role: "fixer"});
         }
-        */
-        if(creep.memory.role == 'miner') {
-          roleMiner.update(creep);
-        }
-        
-        if(creep.memory.role == 'carrier') {
-          roleCarrier.update(creep);
-        }
-        
-        if(creep.memory.role == 'builder') {
-          roleBuilder.update(creep);
-        }
+      }
 
-        if(creep.memory.role == 'upgrader') {
-          roleUpgrader.update(creep);
-        }
-        
-        
+      
+     // Update creeps
+     for(var name in Game.creeps) {
+      var creep = Game.creeps[name];
+      /*
+      if(creep.memory.role == 'harvester') {
+        roleHarvester.update(creep);
+      }
+      */
+      if(creep.memory.role == 'miner') {
+        roleMiner.update(creep);
       }
       
+      if(creep.memory.role == 'carrier') {
+        roleCarrier.update(creep);
+      }
+      
+      if(creep.memory.role == 'builder') {
+        roleBuilder.update(creep);
+      }
 
+      if(creep.memory.role == 'upgrader') {
+        roleUpgrader.update(creep);
+      }
+
+      if(creep.memory.role == 'fixer') {
+        roleFixer.update(creep);
+      }
+
+      
+      
     }
     
-  };
 
-  module.exports = creepsManager;
+  }
+  
+};
+
+module.exports = creepsManager;
