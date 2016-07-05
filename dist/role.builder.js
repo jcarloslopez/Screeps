@@ -34,7 +34,7 @@ var roleBuilder = {
     }
     
     //console.log(total_energy + "/" + total_energy_capacity)
-    if(total_energy >= (total_energy_capacity / 3)){
+    if(total_energy >= (total_energy_capacity / 1.5)){
       if(Game.spawns.Spawn1.transferEnergy(creep) == ERR_NOT_IN_RANGE){
         creep.moveTo(Game.spawns.Spawn1);    
       }
