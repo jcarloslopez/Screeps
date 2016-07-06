@@ -21,16 +21,32 @@
             }
           }
         }else{
-         var wharehouses = creep.room.find(FIND_STRUCTURES, {
+          var wharehouses = creep.room.find(FIND_STRUCTURES, {
           filter: (structure) => {
-            return (structure.structureType == STRUCTURE_EXTENSION || structure.structureType == STRUCTURE_SPAWN || structure.structureType == StructureContainer) &&
-            structure.energy < structure.energyCapacity;
-          }
-        });
-         if(wharehouses.length > 0) {
+            return (structure.structureType == STRUCTURE_EXTENSION || structure.structureType == STRUCTURE_SPAWN) &&
+              structure.energy < structure.energyCapacity;
+            }
+          });
+          
+        if(wharehouses.length > 0) {
           if(creep.transfer(wharehouses[0], RESOURCE_ENERGY) == ERR_NOT_IN_RANGE) {
             creep.moveTo(wharehouses[0]);
           }
+        }else{
+          // No constructions of that type: STRUCTURE_EXTENSION, STRUCTURE_SPAWN
+          // Now check STRUCTURE_STORAGE and STRUCTURE_CONTAINER
+          var containers = creep.room.find(FIND_STRUCTURES, {
+            filter: (structure) => {
+              return (structure.structureType == STRUCTURE_CONTAINER);
+            } 
+          });
+
+          if(containers.length > 0){
+            if(creep.transfer(containers[0], RESOURCE_ENERGY) == ERR_NOT_IN_RANGE){
+              creep.moveTo(containers[0]);
+            }
+          }
+
         }
       }
       

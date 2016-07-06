@@ -84,7 +84,7 @@ var creepsManager = {
     if(currBuilders < config.total_builders){
       /* Dont generate builders if there are not constructions to build */
       var constructions_availiable = Game.spawns.Spawn1.room.find(Game.CONSTRUCTION_SITES);
-      if(!constructions_availiable > 0)return;
+      if(constructions_availiable > 0)
         // Don't generate builders if we don't have miners and carriers
         if(currMiners >= config.total_miners && currCarriers >= config.total_carriers){
           var builder = [WORK, WORK, CARRY, CARRY, MOVE];
